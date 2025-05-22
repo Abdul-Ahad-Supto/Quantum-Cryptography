@@ -16,32 +16,32 @@ def format_filename(cn):
     return cn.replace(' ', '_') + '.pem'
 
 chain = []
-current_file = 'mir.pem'
+current_file = 'noor.pem'
 base_path = '.'  # Current directory
 
-print(f"📄 Certificate Trust Chain for: {current_file}\n")
+print(f"Certificate Trust Chain for: {current_file}\n")
 
 while True:
     try:
         cert = load_cert(os.path.join(base_path, current_file))
     except Exception as e:
-        print(f"❌ Failed to read {current_file}: {e}")
+        print(f"Failed to read {current_file}: {e}")
         break
 
     subject_cn = get_cn(cert.subject)
     issuer_cn = get_cn(cert.issuer)
 
     if subject_cn == issuer_cn:
-        print(f"🔐 {subject_cn}\n   (Self-signed Root Certificate ✅)")
+        print(f"{subject_cn}\n   (Self-signed Root Certificate )")
         break
 
-    print(f"🔐 {subject_cn}\n   issued by ➝ {issuer_cn}\n")
+    print(f"{subject_cn}\n   issued by ➝ {issuer_cn}\n")
 
     # Prepare next file
     next_file = format_filename(issuer_cn)
 
     if not os.path.exists(os.path.join(base_path, next_file)):
-        print(f"🔐 Root CA Bangladesh 2020\n   Self-signed Root Certificate ✅ \n   Provided by Bangladesh CA ✅")
+        print(f"Root CA Bangladesh 2020\n   Self-signed Root Certificate  \n   Provided by Bangladesh CA ")
         break
 
     current_file = next_file
